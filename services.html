@@ -33,7 +33,13 @@
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ font-family:'Inter', sans-serif; color:var(--text); background:var(--bg); line-height:1.65; overflow-x:hidden; }
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    line-height:1.65;
+    overflow-x:hidden;
+  }
   h1,h2,h3,h4{ font-family:'Poppins', sans-serif; font-weight:700; }
   a{ text-decoration:none; color:inherit; }
   ul{ list-style:none; }
@@ -42,25 +48,37 @@
   .progress-bar{
     position:fixed; top:0; left:0; height:3px;
     background:linear-gradient(90deg, var(--orange), var(--orange-2));
-    width:0%; z-index:999; transition:width .08s linear;
+    width:0%; z-index:999;
+    transition:width .08s linear;
   }
 
   .btn{
-    position:relative; display:inline-flex; align-items:center; gap:8px;
-    background:var(--orange); color:#fff; font-weight:600; font-size:15px;
+    position:relative;
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--orange);
+    color:#fff; font-weight:600; font-size:15px;
     padding:14px 30px; border-radius:8px;
     box-shadow:0 10px 24px rgba(255,122,48,0.3);
     transition:transform .2s ease, box-shadow .2s ease;
-    overflow:hidden; border:none; cursor:pointer;
+    overflow:hidden;
+    border: none;
+    cursor: pointer;
   }
   .btn::before{
-    content:''; position:absolute; top:0; left:-75%; width:50%; height:100%;
+    content:'';
+    position:absolute; top:0; left:-75%;
+    width:50%; height:100%;
     background:linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
-    transform:skewX(-20deg); transition:left .6s ease;
+    transform:skewX(-20deg);
+    transition:left .6s ease;
   }
   .btn:hover::before{ left:130%; }
   .btn:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 16px 34px rgba(255,122,48,0.45); }
-  @media (max-width:480px){ .btn{ padding:11px 20px; font-size:13px; } }
+  .btn .arrow{ transition:transform .25s ease; display:inline-block; }
+  .btn:hover .arrow{ transform:translateX(4px); }
+  @media (max-width:480px){
+    .btn{ padding:11px 20px; font-size:13px; }
+  }
 
   .eyebrow{
     color:var(--orange); font-weight:600; font-size:13px;
@@ -68,34 +86,91 @@
   }
   .eyebrow-dot{
     width:7px; height:7px; border-radius:50%; background:var(--orange);
-    box-shadow:0 0 0 0 rgba(255,122,48,0.6); animation:pulseDot 2s infinite;
+    box-shadow:0 0 0 0 rgba(255,122,48,0.6);
+    animation:pulseDot 2s infinite;
   }
-  @keyframes pulseDot{ 0%{ box-shadow:0 0 0 0 rgba(255,122,48,0.55); } 70%{ box-shadow:0 0 0 9px rgba(255,122,48,0); } 100%{ box-shadow:0 0 0 0 rgba(255,122,48,0); } }
+  @keyframes pulseDot{
+    0%{ box-shadow:0 0 0 0 rgba(255,122,48,0.55); }
+    70%{ box-shadow:0 0 0 9px rgba(255,122,48,0); }
+    100%{ box-shadow:0 0 0 0 rgba(255,122,48,0); }
+  }
 
-  /* ---------- HEADER ---------- */
+  /* ---------- HEADER & FULLSCREEN DRAWER OVERLAY ---------- */
   header{
     position:sticky; top:0; z-index:100;
-    background:rgba(255,255,255,0.85); backdrop-filter:blur(10px);
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
     transition:box-shadow .3s ease;
   }
   header.scrolled{ box-shadow:0 6px 24px rgba(14,27,61,0.08); }
-  nav{ display:flex; align-items:center; justify-content:space-between; max-width:1180px; margin:0 auto; padding:18px 24px; }
-  .logo{ font-size:22px; font-weight:800; color:var(--navy); }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1180px; margin:0 auto; padding:18px 24px;
+  }
+  .logo{ font-size:22px; font-weight:800; color:var(--navy); z-index:102; }
   .logo span{ color:var(--orange); }
-  .nav-links{ display:flex; gap:36px; font-size:15px; font-weight:500; color:var(--navy); }
+
+  /* Desktop Nav Links */
+  .nav-links{ display:flex; gap:36px; font-size:15px; font-weight:500; color:var(--navy); align-items: center; }
   .nav-links a{ position:relative; padding-bottom:4px; }
-  .nav-links a.active{ color:var(--orange); }
-  .nav-links a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--orange); transition:width .25s ease; }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:2px;
+    background:var(--orange); transition:width .25s ease;
+  }
   .nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
-  .nav-links a:hover{ color:var(--orange); }
-  .nav-btn{ background:var(--navy); color:#fff; padding:10px 22px; border-radius:6px; font-size:14px; font-weight:600; transition:transform .2s ease, background .2s ease; }
-  .nav-btn:hover{ transform:translateY(-2px); background:var(--orange); }
-  @media (max-width:820px){ .nav-links{ display:none; } }
-  @media (max-width:480px){
-    nav{ padding:14px 16px; }
-    .logo{ font-size:18px; }
-    .nav-btn{ padding:8px 14px; font-size:12px; border-radius:6px; white-space:nowrap; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--orange); }
+
+  /* Hamburger Menu Toggle Button */
+  .menu-toggle {
+    display: none; background: none; border: none; font-size: 26px; cursor: pointer; color: var(--navy); padding: 4px; z-index: 102;
+  }
+
+  /* FULL-SCREEN DRAWER OVERLAY */
+  .mobile-menu-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+    z-index: 999; opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .mobile-menu-overlay.open { opacity: 1; visibility: visible; }
+
+  .mobile-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 85%; max-width: 360px;
+    background: var(--navy); color: #fff; z-index: 1000;
+    padding: 30px 24px; display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  }
+  .mobile-menu-overlay.open .mobile-drawer { transform: translateX(0); }
+
+  .drawer-close {
+    align-self: flex-end; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; padding: 4px; margin-bottom: 20px;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .drawer-close:hover { transform: scale(1.1); color: var(--orange); }
+
+  .drawer-links {
+    display: flex; flex-direction: column; gap: 24px; margin-top: 10px;
+  }
+  .drawer-links a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px; font-weight: 600; color: #C7CCE3;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+    padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .drawer-links a:hover, .drawer-links a.active {
+    color: var(--orange); padding-left: 6px; border-bottom-color: var(--orange);
+  }
+
+  .drawer-footer {
+    margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  @media (max-width:820px){ 
+    .nav-links { display: none; } 
+    .menu-toggle { display: block; } 
   }
 
   /* ---------- PAGE HERO ---------- */
@@ -173,13 +248,12 @@
   @media (max-width:900px){ .services-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:600px){ .services-grid{ grid-template-columns:1fr; } .services-section{ margin-top:-40px; } }
 
-  /* stagger delays */
   .services-grid .svc-card:nth-child(3n+1){ transition-delay:0s; }
   .services-grid .svc-card:nth-child(3n+2){ transition-delay:.08s; }
   .services-grid .svc-card:nth-child(3n){ transition-delay:.16s; }
 
   .guarantee{
-    max-width:1180px; margin:10px auto 0;
+    max-width:1180px; margin:40px auto 0;
     background:var(--navy); color:#fff;
     border-radius:16px; padding:24px 34px;
     display:flex; align-items:center; gap:16px; font-weight:600;
@@ -209,7 +283,7 @@
     position:fixed; bottom:24px; right:24px; z-index:200;
     width:56px; height:56px; border-radius:50%; background:var(--orange);
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 24px rgba(0,0,0,0.35); font-size:26px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.35); font-size:26px; color:#fff;
   }
   .float-wa::before, .float-wa::after{
     content:''; position:absolute; inset:0; border-radius:50%; border:2px solid var(--orange);
@@ -228,15 +302,35 @@
 <header id="siteHeader">
   <nav>
     <div class="logo">growthvibe<span>.</span></div>
+    
+    <!-- Hamburger Menu Toggle Button -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+
+    <!-- Desktop Navigation Links -->
     <ul class="nav-links">
-      <li><a href="growthvibe-landing.html#home">Home</a></li>
-      <li><a href="growthvibe-landing.html#about">About Us</a></li>
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#about">About Us</a></li>
       <li><a href="services.html" class="active">Services</a></li>
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
-    <a class="nav-btn js-wa-link" href="#">Register Now</a>
   </nav>
 </header>
+
+<!-- FULL-SCREEN DRAWER OVERLAY -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <div class="mobile-drawer" id="mobileDrawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close Menu">✕</button>
+    <div class="drawer-links">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#about">About Us</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="drawer-footer">
+      <a class="btn js-wa-link" style="width: 100%; justify-content: center; padding: 12px;" href="#">Register Now</a>
+    </div>
+  </div>
+</div>
 
 <section class="page-hero">
   <div class="blob blob-1"></div>
@@ -244,7 +338,7 @@
   <div class="page-hero-inner">
     <h1>Services</h1>
     <div class="breadcrumb reveal">
-      <a href="growthvibe-landing.html">Home</a><span>/</span>
+      <a href="index.html">Home</a><span>/</span>
       <span>Pages</span><span>/</span>
       <span style="color:var(--orange-2);">Services</span>
     </div>
@@ -419,28 +513,28 @@
   </div>
 </section>
 
-<footer id="contact">
+<footer>
   <div class="footer-grid">
     <div>
-      <div class="logo">growthvibe<span>.</span></div>
+      <div class="logo" style="color:#fff;">growthvibe<span>.</span></div>
       <p>A full-service digital marketing agency helping brands grow, engage, and convert online.</p>
     </div>
     <div>
       <h4>Menu</h4>
       <ul>
-        <li><a href="growthvibe-landing.html#home">Home</a></li>
-        <li><a href="growthvibe-landing.html#about">About Us</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
         <li><a href="services.html">Services</a></li>
       </ul>
     </div>
     <div>
       <h4>Our Services</h4>
       <ul>
-        <li>Social Media</li>
-        <li>Google Ads</li>
-        <li>Video Ads</li>
-        <li>SEO</li>
+        <li><a href="services.html">Social Media</a></li>
+        <li><a href="services.html">Google Ads</a></li>
+        <li><a href="services.html">Video Ads</a></li>
+        <li><a href="services.html">SEO</a></li>
       </ul>
     </div>
     <div>
@@ -473,6 +567,38 @@
   document.querySelectorAll('.js-city').forEach(el => el.textContent = window.CONTACT_CITY);
   document.querySelectorAll('.js-phone').forEach(el => el.textContent = window.CONTACT_PHONE);
   document.querySelectorAll('.js-email').forEach(el => el.textContent = window.CONTACT_EMAIL);
+
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openMenu() {
+    mobileMenuOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    mobileMenuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle.addEventListener('click', openMenu);
+  drawerClose.addEventListener('click', closeMenu);
+  mobileMenuOverlay.addEventListener('click', (e) => {
+    if (e.target === mobileMenuOverlay) closeMenu();
+  });
+
+  document.querySelectorAll('.drawer-links a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-links a').forEach(link => {
+    const linkPath = link.getAttribute('href').split('#')[0];
+    if (linkPath === currentPath) {
+      link.classList.add('active');
+    }
+  });
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
